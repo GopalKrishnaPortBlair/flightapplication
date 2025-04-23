@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `file_upload_log` (
   `File_Name` varchar(255) NOT NULL,
   `Upload_Timestamp` datetime NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- Data exporting was unselected.
 
@@ -160,7 +160,22 @@ CREATE TABLE IF NOT EXISTS `flight_data` (
   `FAC` varchar(255) DEFAULT NULL,
   `File_Reference` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+-- Data exporting was unselected.
+
+-- Dumping structure for table flight.math_rules
+DROP TABLE IF EXISTS `math_rules`;
+CREATE TABLE IF NOT EXISTS `math_rules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rule_name` varchar(255) NOT NULL,
+  `rule_description` text DEFAULT NULL,
+  `target_column` varchar(255) NOT NULL,
+  `conditions` text DEFAULT NULL,
+  `equation` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `selcols` longtext DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- Data exporting was unselected.
 

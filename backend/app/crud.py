@@ -72,8 +72,11 @@ def get_test_records_by_file_reference(db: Session, file_reference: str):
     # In the crud.py file, change this line:
     # Ensure File_Reference exists as part of the model
     #records = db.query(FlightDataModel).filter("File_Reference" == file_reference).all()
-    records = db.query(FlightDataModel).all()
+    #records = db.query(FlightDataModel).all()
+    records = db.query(FlightDataModel).filter(FlightDataModel.File_Reference == file_reference).all()
     return records
+
+
 
 
 # ✅ NEW FUNCTION to return full file details + test records

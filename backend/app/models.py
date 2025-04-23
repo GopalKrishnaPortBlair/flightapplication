@@ -1,13 +1,18 @@
 from sqlalchemy import (
     Column, Integer, String, Float, Date, DateTime, Boolean,
-    MetaData, Table, inspect
+    MetaData, Table, inspect,JSON, Text
 )
 from sqlalchemy.ext.declarative import declarative_base
 from pydantic import BaseModel
-from typing import Type, Dict, Any, Optional
+from typing import Type, Dict, Any, Optional, Union
 from decimal import Decimal
 
 from .database import engine  # Assuming database.py has engine setup
+
+from sqlalchemy.dialects.mysql import JSON  # If using MySQL 5.7+ with JSON support
+
+
+
 
 # SQLAlchemy base
 Base = declarative_base()
@@ -34,6 +39,20 @@ class Test(Base):
     quarter = Column(String)
     year = Column(Integer)
     marketing_airline = Column(String)
+
+class MathRule(Base):
+    __tablename__ = "math_rules"
+
+    id = Column(Integer, primary_key=True, index=True)
+    rule_name = Column(String(255))
+    rule_description = Column(Text)
+    target_column = Column(String(255))
+    conditions = Column(Text)  # Text to store JSON string
+    equation = Column(Text)    # Text to store full equation
+    selcols =   Column(Text)
+
+
+
 
 # ---------------------------------------
 # Dynamic SQLAlchemy Model Generator

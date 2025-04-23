@@ -208,49 +208,97 @@ const CreateRules = () => {
     }).join(" ");
   };
 
+  // Get equation value for saving
+  const getSelectedColumnsValue = () => {
+    return equationItems.map(item => {
+      if (item.type === "column") {
+        return `${item.value}||`;
+      }
+      
+    }).join("");
+  };
   // Save math rule
-  const saveMathRule = () => {
+  const saveMathRule = async () => {
     if (!ruleName) {
       toast({
         title: "Validation error",
         description: "Rule name is required",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
-
+  
     if (!targetColumn) {
       toast({
         title: "Validation error",
         description: "Target column is required",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
-
+  
     if (equationItems.length === 0) {
       toast({
         title: "Validation error",
         description: "Equation cannot be empty",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
+  
+    try {
 
-    // In a real app, you would save the math rule to your backend
-    console.log("Math Rule would be saved:", { 
-      ruleName, 
-      ruleDescription, 
-      conditions, 
-      targetColumn, 
-      equation: getEquationValue() 
-    });
-    
-    toast({
-      title: "Rule saved",
-      description: `Math rule "${ruleName}" has been saved successfully`,
-    });
+
+      console.log("Payload to send:", JSON.stringify({
+        rule_name: ruleName,
+        rule_description: ruleDescription,
+        target_column: targetColumn,
+        conditions: JSON.stringify(conditions),
+        equation: getEquationValue(), // the full array of equation items
+        columns:getSelectedColumnsValue()
+      }));
+
+
+      const response = await fetch("http://localhost:8000/save-rule/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          rule_name: ruleName,
+          rule_description: ruleDescription,
+          target_column: targetColumn,
+          conditions: JSON.stringify(conditions),
+          equation: getEquationValue(), // the full array of equation items
+          selcols: getSelectedColumnsValue()
+        }),
+      });
+
+      
+
+  
+      if (!response.ok) {
+        throw new Error("Failed to save rule");
+      }
+  
+      const data = await response.json();
+  
+      toast({
+        title: "Rule saved",
+        description: `Math rule "${ruleName}" has been saved successfully (ID: ${data.id})`,
+      });
+  
+      // Optionally reset form or update state
+    } catch (error) {
+      console.error("Error saving rule:", error);
+      toast({
+        title: "Error",
+        description: "An error occurred while saving the rule",
+        variant: "destructive",
+      });
+    }
   };
+  
 
   // Clear the equation
   const clearEquation = () => {
@@ -275,13 +323,14 @@ const CreateRules = () => {
   
     try {
       console.log("Sending to API:", { columns: usedColumns });
+      console.log("Equation " , JSON.stringify({ columns: usedColumns , equation : equationItems }))
 
       const response = await fetch("http://localhost:8000/get-first-row/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ columns: usedColumns }),
+        body: JSON.stringify({ columns: usedColumns  }),
       });
   
       const data = await response.json();
