@@ -4,3 +4,7 @@ pandas
 sqlalchemy
 pymysql
 python-dotenv
+openpyxl
+python-multipart
+inflect
+

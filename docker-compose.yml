@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  frontend:
+    build: ./flight-flow-orchestrator-main
+    ports:
+      - "3000:80"
+    restart: always
+
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: flight
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - flight-data:/var/lib/mysql
+      - ./flight.sql:/docker-entrypoint-initdb.d/flight.sql
+    ports:
+      - "3306:3306"
+
+volumes:
+  flight-data:

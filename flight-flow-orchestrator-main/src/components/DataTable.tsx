@@ -32,7 +32,7 @@ const DataTable = ({ id, columnsToShow = [] }) => {
         console.log("Cjheck Check is it able to Get ")
         const response = await axios.get(`http://localhost:8000/filesv1/${id}`);
         const url = `http://localhost:8000/filesv1/${id}`;
-        console.log("Making GET request to:", url);
+      console.log("Making GET request to:", url);
         setFileName(response.data.file.file_name);
         setRecords(response.data.records);
       } catch (error) {

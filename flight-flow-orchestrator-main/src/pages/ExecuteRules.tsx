@@ -497,6 +497,8 @@ const ExecuteRules = () => {
       ? [selectedRuleDetails.tcolumn]
       : []
   }
+ 
+ 
   
 />
             </div>
