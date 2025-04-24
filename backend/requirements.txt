@@ -7,4 +7,5 @@ python-dotenv
 openpyxl
 python-multipart
 inflect
+cryptography
 
